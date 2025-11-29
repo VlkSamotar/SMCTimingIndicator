@@ -49,7 +49,17 @@ Designed for Smart Money Concepts (SMC) / ICT strategies, this tool helps visual
 ---
 
 ## 📷 Screenshots
-*(Add chart screenshots here to demonstrate session lines in action.)*
+![Session lines for a single trading day](docs/images/session-lines-single-day.png)
+
+> Vertical lines marking key intraday times for one trading day. Ideal for SMC/ICT session structure visualization.
+
+![Session lines with history mode enabled](docs/images/session-lines-history-mode.png)
+
+> Historical lines drawn across multiple trading days. Useful for backtesting and pattern recognition.
+
+![User-configurable parameters in cTrader](docs/images/indicator-parameter-settings.png)
+
+> Each line has customizable time, color, style, and thickness. History mode and UTC offset are also available.
 
 ---
 

@@ -10,6 +10,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{41830171-CAD3-483B-9384-4FF25757F011}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\..\..\Pictures\Screenshots\session-lines-single-day.png = ..\..\..\..\..\..\Pictures\Screenshots\session-lines-single-day.png
+		..\..\..\..\..\..\Pictures\Screenshots\indicator-parameter-settings.png = ..\..\..\..\..\..\Pictures\Screenshots\indicator-parameter-settings.png
+		..\..\..\..\..\..\Pictures\Screenshots\session-lines-history-mode.png = ..\..\..\..\..\..\Pictures\Screenshots\session-lines-history-mode.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +32,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}
+		{41830171-CAD3-483B-9384-4FF25757F011} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E448A322-9FAD-4C23-9BE2-893490573442}
