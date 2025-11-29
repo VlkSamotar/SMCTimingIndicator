@@ -24,15 +24,11 @@ namespace SMCTimingIndicator.Models
 			Thickness = thickness;
 		}
 
-		/// <summary>
-		/// Bezpečně převede string na TimeSpan. Pokud selže, vrátí default 08:00.
-		/// </summary>
 		public TimeSpan GetTimeSpan()
 		{
 			if (TimeSpan.TryParse(TimeString, out var ts))
 				return ts;
 
-			// fallback – defaultní čas
 			return new TimeSpan(8, 0, 0);
 		}
 

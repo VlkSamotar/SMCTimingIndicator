@@ -106,7 +106,6 @@ namespace SMCTimingIndicator
 			lastDrawnDay = DateTime.MinValue;
 			drawer = new LineDrawer(Chart, TimezoneOffsetMinutes);
 
-			// Inicializace definic čar
 			lines = new List<LineDefinition>
 			{
 				new LineDefinition(1, Line1Time, Line1Color, Line1Style, Line1Thickness),
