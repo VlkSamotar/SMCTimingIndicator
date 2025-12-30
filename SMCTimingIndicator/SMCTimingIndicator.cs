@@ -1,4 +1,26 @@
-﻿using cAlgo.API;
+﻿/*
+  SMC Timing Indicator for cTrader
+  --------------------------------
+  Author: Jakub Březa
+  Date: December 2025
+  License: MIT (see LICENSE file for details)
+
+  Description:
+  This indicator draws up to eight fully configurable vertical timing lines
+  to highlight key intraday sessions, liquidity windows, or market events.
+  Each line supports custom time, color, style, thickness, and optional
+  historical rendering. A global UTC offset ensures correct alignment across
+  different brokers and server timezones.
+
+  Features:
+  - Up to 8 independent timing lines
+  - Customizable time, color, style, and thickness
+  - Optional historical mode for backtesting
+  - Global UTC offset for consistent timing
+  - Clean, modular architecture for easy maintenance
+*/
+
+using cAlgo.API;
 using System;
 using System.Collections.Generic;
 using SMCTimingIndicator.Enums;
@@ -10,90 +32,90 @@ namespace SMCTimingIndicator
 	[Indicator(IsOverlay = true, AccessRights = AccessRights.None)]
 	public class SMCTimingIndicator : Indicator
 	{
-		[Parameter("Line 1 Time (HH:mm)", DefaultValue = "08:00")]
+		[Parameter("Line 1 Time (HH:mm)", DefaultValue = "08:00", Group = "Line 1 Settings")]
 		public string Line1Time { get; set; }
-		[Parameter("Line 1 Color", DefaultValue = MyLineColor.Blue)]
+		[Parameter("Line 1 Color", DefaultValue = MyLineColor.Blue, Group = "Line 1 Settings")]
 		public MyLineColor Line1Color { get; set; }
-		[Parameter("Line 1 Style", DefaultValue = MyLineStyle.Dashed)]
+		[Parameter("Line 1 Style", DefaultValue = MyLineStyle.Dashed, Group = "Line 1 Settings")]
 		public MyLineStyle Line1Style { get; set; }
-		[Parameter("Line 1 Thickness", DefaultValue = MyLineThickness.One)]
+		[Parameter("Line 1 Thickness", DefaultValue = MyLineThickness.One, Group = "Line 1 Settings")]
 		public MyLineThickness Line1Thickness { get; set; }
 
 
-		[Parameter("Line 2 Time (HH:mm)", DefaultValue = "09:00")]
+		[Parameter("Line 2 Time (HH:mm)", DefaultValue = "09:00", Group = "Line 2 Settings")]
 		public string Line2Time { get; set; }
-		[Parameter("Line 2 Color", DefaultValue = MyLineColor.Orange)]
+		[Parameter("Line 2 Color", DefaultValue = MyLineColor.Orange, Group = "Line 2 Settings")]
 		public MyLineColor Line2Color { get; set; }
-		[Parameter("Line 2 Style", DefaultValue = MyLineStyle.Dashed)]
+		[Parameter("Line 2 Style", DefaultValue = MyLineStyle.Dashed, Group = "Line 2 Settings")]
 		public MyLineStyle Line2Style { get; set; }
-		[Parameter("Line 2 Thickness", DefaultValue = MyLineThickness.One)]
+		[Parameter("Line 2 Thickness", DefaultValue = MyLineThickness.One, Group = "Line 2 Settings")]
 		public MyLineThickness Line2Thickness { get; set; }
 
 
-		[Parameter("Line 3 Time (HH:mm)", DefaultValue = "10:30")]
+		[Parameter("Line 3 Time (HH:mm)", DefaultValue = "10:30", Group = "Line 3 Settings")]
 		public string Line3Time { get; set; }
-		[Parameter("Line 3 Color", DefaultValue = MyLineColor.Grey)]
+		[Parameter("Line 3 Color", DefaultValue = MyLineColor.Grey, Group = "Line 3 Settings")]
 		public MyLineColor Line3Color { get; set; }
-		[Parameter("Line 3 Style", DefaultValue = MyLineStyle.Dashed)]
+		[Parameter("Line 3 Style", DefaultValue = MyLineStyle.Dashed, Group = "Line 3 Settings")]
 		public MyLineStyle Line3Style { get; set; }
-		[Parameter("Line 3 Thickness", DefaultValue = MyLineThickness.One)]
+		[Parameter("Line 3 Thickness", DefaultValue = MyLineThickness.One, Group = "Line 3 Settings")]
 		public MyLineThickness Line3Thickness { get; set; }
 
 
-		[Parameter("Line 4 Time (HH:mm)", DefaultValue = "12:30")]
+		[Parameter("Line 4 Time (HH:mm)", DefaultValue = "12:30", Group = "Line 4 Settings")]
 		public string Line4Time { get; set; }
-		[Parameter("Line 4 Color", DefaultValue = MyLineColor.Grey)]
+		[Parameter("Line 4 Color", DefaultValue = MyLineColor.Grey, Group = "Line 4 Settings")]
 		public MyLineColor Line4Color { get; set; }
-		[Parameter("Line 4 Style", DefaultValue = MyLineStyle.Dashed)]
+		[Parameter("Line 4 Style", DefaultValue = MyLineStyle.Dashed, Group = "Line 4 Settings")]
 		public MyLineStyle Line4Style { get; set; }
-		[Parameter("Line 4 Thickness", DefaultValue = MyLineThickness.One)]
+		[Parameter("Line 4 Thickness", DefaultValue = MyLineThickness.One, Group = "Line 4 Settings")]
 		public MyLineThickness Line4Thickness { get; set; }
 
 
-		[Parameter("Line 5 Time (HH:mm)", DefaultValue = "14:00")]
+		[Parameter("Line 5 Time (HH:mm)", DefaultValue = "14:00", Group = "Line 5 Settings")]
 		public string Line5Time { get; set; }
-		[Parameter("Line 5 Color", DefaultValue = MyLineColor.Red)]
+		[Parameter("Line 5 Color", DefaultValue = MyLineColor.Red, Group = "Line 5 Settings")]
 		public MyLineColor Line5Color { get; set; }
-		[Parameter("Line 5 Style", DefaultValue = MyLineStyle.Dashed)]
+		[Parameter("Line 5 Style", DefaultValue = MyLineStyle.Dashed, Group = "Line 5 Settings")]
 		public MyLineStyle Line5Style { get; set; }
-		[Parameter("Line 5 Thickness", DefaultValue = MyLineThickness.One)]
+		[Parameter("Line 5 Thickness", DefaultValue = MyLineThickness.One, Group = "Line 5 Settings")]
 		public MyLineThickness Line5Thickness { get; set; }
 
 
-		[Parameter("Line 6 Time (HH:mm)", DefaultValue = "15:00")]
+		[Parameter("Line 6 Time (HH:mm)", DefaultValue = "15:00", Group = "Line 6 Settings")]
 		public string Line6Time { get; set; }
-		[Parameter("Line 6 Color", DefaultValue = MyLineColor.Red)]
+		[Parameter("Line 6 Color", DefaultValue = MyLineColor.Red, Group = "Line 6 Settings")]
 		public MyLineColor Line6Color { get; set; }
-		[Parameter("Line 6 Style", DefaultValue = MyLineStyle.Dashed)]
+		[Parameter("Line 6 Style", DefaultValue = MyLineStyle.Dashed, Group = "Line 6 Settings")]
 		public MyLineStyle Line6Style { get; set; }
-		[Parameter("Line 6 Thickness", DefaultValue = MyLineThickness.One)]
+		[Parameter("Line 6 Thickness", DefaultValue = MyLineThickness.One, Group = "Line 6 Settings")]
 		public MyLineThickness Line6Thickness { get; set; }
 
 
-		[Parameter("Line 7 Time (HH:mm)", DefaultValue = "15:30")]
+		[Parameter("Line 7 Time (HH:mm)", DefaultValue = "15:30", Group = "Line 7 Settings")]
 		public string Line7Time { get; set; }
-		[Parameter("Line 7 Color", DefaultValue = MyLineColor.Red)]
+		[Parameter("Line 7 Color", DefaultValue = MyLineColor.Red, Group = "Line 7 Settings")]
 		public MyLineColor Line7Color { get; set; }
-		[Parameter("Line 7 Style", DefaultValue = MyLineStyle.Dashed)]
+		[Parameter("Line 7 Style", DefaultValue = MyLineStyle.Dashed, Group = "Line 7 Settings")]
 		public MyLineStyle Line7Style { get; set; }
-		[Parameter("Line 7 Thickness", DefaultValue = MyLineThickness.One)]
+		[Parameter("Line 7 Thickness", DefaultValue = MyLineThickness.One, Group = "Line 7 Settings")]
 		public MyLineThickness Line7Thickness { get; set; }
 
 
-		[Parameter("Line 8 Time (HH:mm)", DefaultValue = "17:00")]
+		[Parameter("Line 8 Time (HH:mm)", DefaultValue = "17:00", Group = "Line 8 Settings")]
 		public string Line8Time { get; set; }
-		[Parameter("Line 8 Color", DefaultValue = MyLineColor.Purple)]
+		[Parameter("Line 8 Color", DefaultValue = MyLineColor.Purple, Group = "Line 8 Settings")]
 		public MyLineColor Line8Color { get; set; }
-		[Parameter("Line 8 Style", DefaultValue = MyLineStyle.Dashed)]
+		[Parameter("Line 8 Style", DefaultValue = MyLineStyle.Dashed, Group = "Line 8 Settings")]
 		public MyLineStyle Line8Style { get; set; }
-		[Parameter("Line 8 Thickness", DefaultValue = MyLineThickness.One)]
+		[Parameter("Line 8 Thickness", DefaultValue = MyLineThickness.One, Group = "Line 8 Settings")]
 		public MyLineThickness Line8Thickness { get; set; }
 
 
-		[Parameter("Show Historical Lines?", DefaultValue = false)]
+		[Parameter("Show Historical Lines?", DefaultValue = false, Group = "Global Settings")]
 		public bool ShowHistory { get; set; }
 
-		[Parameter("UTC Offset (minutes)", DefaultValue = 60)]
+		[Parameter("UTC Offset (minutes)", DefaultValue = 60, Group = "Global Settings")]
 		public int TimezoneOffsetMinutes { get; set; }
 
 
