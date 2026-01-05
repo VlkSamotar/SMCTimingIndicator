@@ -22,9 +22,10 @@
 
 using cAlgo.API;
 using SMCTimingIndicator.Enums;
+using SMCTimingIndicator.Helpers;
 using SMCTimingIndicator.Models;
 using SMCTimingIndicator.Services;
-using SMCTimingIndicator.Helpers;
+using System;
 
 namespace SMCTimingIndicator
 {
@@ -126,6 +127,8 @@ namespace SMCTimingIndicator
 
 		protected override void Initialize()
 		{
+			if (TimeFrame > TimeFrameMapper.FromPossibleTimeFrames(ShowBelowTimeFrame)) return;
+
 			lastDrawnDay = DateTime.MinValue;
 			drawer = new LineDrawer(Chart, TimezoneOffsetMinutes);
 
@@ -142,17 +145,14 @@ namespace SMCTimingIndicator
 			};
 
 			var todayUtc = Bars.OpenTimes.LastValue.Date;
-
-			if(TimeFrame <= TimeFrameMapper.FromPossibleTimeFrames(ShowBelowTimeFrame))
+			
+			if (ShowHistory)
+				DrawHistoricalLines();
+			else
 			{
-				if (ShowHistory)
-					DrawHistoricalLines();
-				else
-				{
-					DrawLinesForDay(todayUtc, overwrite: true);
-					lastDrawnDay = todayUtc;
-				}
-			}		
+				DrawLinesForDay(todayUtc, overwrite: true);
+				lastDrawnDay = todayUtc;
+			}					
 		}
 
 		public override void Calculate(int index)
