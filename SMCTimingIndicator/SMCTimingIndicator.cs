@@ -21,17 +21,26 @@
 */
 
 using cAlgo.API;
-using System;
-using System.Collections.Generic;
 using SMCTimingIndicator.Enums;
 using SMCTimingIndicator.Models;
 using SMCTimingIndicator.Services;
+using SMCTimingIndicator.Helpers;
 
 namespace SMCTimingIndicator
 {
 	[Indicator(IsOverlay = true, AccessRights = AccessRights.None)]
 	public class SMCTimingIndicator : Indicator
 	{
+		[Parameter("Show Historical Lines?", DefaultValue = false, Group = "Global Settings")]
+		public bool ShowHistory { get; set; }
+
+		[Parameter("UTC Offset (minutes)", DefaultValue = 60, Group = "Global Settings")]
+		public int TimezoneOffsetMinutes { get; set; }
+
+		[Parameter("Show at interval below", DefaultValue = PossibleTimeFrames.Hour1, Group = "Global Settings")]
+		public PossibleTimeFrames ShowBelowTimeFrame { get; set; }
+
+		
 		[Parameter("Line 1 Time (HH:mm)", DefaultValue = "08:00", Group = "Line 1 Settings")]
 		public string Line1Time { get; set; }
 		[Parameter("Line 1 Color", DefaultValue = MyLineColor.Blue, Group = "Line 1 Settings")]
@@ -111,14 +120,6 @@ namespace SMCTimingIndicator
 		[Parameter("Line 8 Thickness", DefaultValue = MyLineThickness.One, Group = "Line 8 Settings")]
 		public MyLineThickness Line8Thickness { get; set; }
 
-
-		[Parameter("Show Historical Lines?", DefaultValue = false, Group = "Global Settings")]
-		public bool ShowHistory { get; set; }
-
-		[Parameter("UTC Offset (minutes)", DefaultValue = 60, Group = "Global Settings")]
-		public int TimezoneOffsetMinutes { get; set; }
-
-
 		private DateTime lastDrawnDay;
 		private LineDrawer drawer;
 		private List<LineDefinition> lines;
@@ -142,18 +143,21 @@ namespace SMCTimingIndicator
 
 			var todayUtc = Bars.OpenTimes.LastValue.Date;
 
-			if (ShowHistory)
-				DrawHistoricalLines();
-			else
+			if(TimeFrame <= TimeFrameMapper.FromPossibleTimeFrames(ShowBelowTimeFrame))
 			{
-				DrawLinesForDay(todayUtc, overwrite: true);
-				lastDrawnDay = todayUtc;
-			}
+				if (ShowHistory)
+					DrawHistoricalLines();
+				else
+				{
+					DrawLinesForDay(todayUtc, overwrite: true);
+					lastDrawnDay = todayUtc;
+				}
+			}		
 		}
 
 		public override void Calculate(int index)
 		{
-			if (index != Bars.Count - 1) return;
+			if (index != Bars.Count - 1 || TimeFrame > TimeFrameMapper.FromPossibleTimeFrames(ShowBelowTimeFrame)) return;
 
 			var todayUtc = Bars.OpenTimes[index].Date;
 
